@@ -1,29 +1,29 @@
+import LogItem from "./LogItem";
 import type { Log, Category } from "../types";
 
 interface Props {
   logs: Log[];
   categories: Category[];
+  onUpdate: (log: Log) => void;
+  onDelete: (id: string) => void;
 }
 
-export default function LogList({ logs, categories }: Props) {
-  const getCategoryName = (id: string) =>
-    categories.find((c) => c.id === id)?.name || "Unknown";
-
+export default function LogList({
+  logs,
+  categories,
+  onUpdate,
+  onDelete,
+}: Props) {
   return (
     <div className="space-y-2">
       {logs.map((log) => (
-        <div
+        <LogItem
           key={log.id}
-          className="flex justify-between p-4 border border-neutral-800 rounded-lg"
-        >
-          <div>
-            <p className="font-semibold">{log.task}</p>
-            <p className="text-sm text-neutral-400">
-              {getCategoryName(log.categoryId)} — {log.minutes} min
-            </p>
-          </div>
-          <div className="text-sm text-neutral-500">{log.date}</div>
-        </div>
+          log={log}
+          categories={categories}
+          onUpdate={onUpdate}
+          onDelete={onDelete}
+        />
       ))}
     </div>
   );
