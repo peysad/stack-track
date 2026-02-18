@@ -1,3 +1,4 @@
+import SummaryCards from "./SummaryCards";
 import AddLogForm from "./AddLogForm";
 import LogList from "./LogList";
 import type { Log, Category } from "../types";
@@ -29,6 +30,7 @@ export default function Dashboard({
 
   return (
     <div className="grid gap-6">
+      <SummaryCards logs={logs} categories={categories} />
       <AddLogForm categories={categories} onAdd={handleAddLog} />
       <LogList
         logs={logs}
