@@ -4,6 +4,7 @@ import LogList from "./LogList";
 import CategoryChart from "./CategoryChart";
 import WeeklyChart from "./WeeklyChart";
 import LogFilter from "./LogFilter";
+import ExportCSV from "./ExportCSV";
 import { useState } from "react";
 import type { Log, Category } from "../types";
 
@@ -45,6 +46,9 @@ export default function Dashboard({
         sortBy={sortBy}
         setSortBy={setSortBy}
       />
+      <div className="flex justify-end">
+        <ExportCSV logs={logs} categories={categories} />
+      </div>
       <CategoryChart logs={logs} categories={categories} />
       <WeeklyChart logs={logs} />
       <LogList
