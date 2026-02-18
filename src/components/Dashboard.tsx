@@ -33,32 +33,34 @@ export default function Dashboard({
     });
 
   return (
-    <div className="grid gap-6">
-      <SummaryCards logs={logs} categories={categories} />
-      <AddLogForm
-        categories={categories}
-        onAdd={(log) => setLogs([log, ...logs])}
-      />
-      <LogFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-      />
-      <div className="flex justify-end">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="space-y-6">
+        <SummaryCards logs={logs} categories={categories} />
+        <AddLogForm
+          categories={categories}
+          onAdd={(log) => setLogs([log, ...logs])}
+        />
         <ExportCSV logs={logs} categories={categories} />
       </div>
-      <CategoryChart logs={logs} categories={categories} />
-      <WeeklyChart logs={logs} />
-      <LogList
-        logs={filteredLogs}
-        categories={categories}
-        onUpdate={(log) =>
-          setLogs(logs.map((l) => (l.id === log.id ? log : l)))
-        }
-        onDelete={(id) => setLogs(logs.filter((l) => l.id !== id))}
-      />
+      <div className="space-y-6">
+        <LogFilter
+          categories={categories}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          sortBy={sortBy}
+          setSortBy={setSortBy}
+        />
+        <CategoryChart logs={logs} categories={categories} />
+        <WeeklyChart logs={logs} />
+        <LogList
+          logs={filteredLogs}
+          categories={categories}
+          onUpdate={(log) =>
+            setLogs(logs.map((l) => (l.id === log.id ? log : l)))
+          }
+          onDelete={(id) => setLogs(logs.filter((l) => l.id !== id))}
+        />
+      </div>
     </div>
   );
 }

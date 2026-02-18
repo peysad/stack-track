@@ -42,13 +42,13 @@ export default function AddLogForm({ categories, onAdd }: Props) {
         placeholder="Task name"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        className="p-2 rounded-xl border-0 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-neutral-400"
         aria-label="Task name"
       />
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        className="p-2 rounded-xl border-0 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
         aria-label="Select category"
       >
         {categories.map((c) => (
@@ -74,7 +74,7 @@ export default function AddLogForm({ categories, onAdd }: Props) {
       />
       <button
         type="submit"
-        className="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-xl hover:scale-105 transition-transform text-white shadow-lg"
         aria-label="Add log"
       >
         Add Log

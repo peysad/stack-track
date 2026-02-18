@@ -29,18 +29,31 @@ export default function SummaryCards({ logs, categories }: Props) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div className="p-4 border border-neutral-800 rounded-lg">
-        <p className="text-sm text-neutral-400">Today</p>
-        <p className="text-xl font-semibold">{todayMinutes} min</p>
-      </div>
-      <div className="p-4 border border-neutral-800 rounded-lg">
-        <p className="text-sm text-neutral-400">This Week</p>
-        <p className="text-xl font-semibold">{weekMinutes} min</p>
-      </div>
-      <div className="p-4 border border-neutral-800 rounded-lg">
-        <p className="text-sm text-neutral-400">Top Category</p>
-        <p className="text-xl font-semibold">{topCategoryName}</p>
-      </div>
+      {[
+        {
+          label: "Today",
+          value: todayMinutes,
+          color: "from-indigo-500 to-indigo-700",
+        },
+        {
+          label: "This Week",
+          value: weekMinutes,
+          color: "from-green-500 to-green-700",
+        },
+        {
+          label: "Top Category",
+          value: topCategoryName,
+          color: "from-pink-500 to-pink-700",
+        },
+      ].map((card) => (
+        <div
+          key={card.label}
+          className={`p-6 rounded-2xl bg-gradient-to-br ${card.color} shadow-lg flex flex-col justify-center items-center text-white`}
+        >
+          <p className="text-sm">{card.label}</p>
+          <p className="text-2xl font-bold">{card.value}</p>
+        </div>
+      ))}
     </div>
   );
 }
