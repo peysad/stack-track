@@ -32,18 +32,24 @@ export default function AddLogForm({ categories, onAdd }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col sm:flex-row sm:items-end gap-4 flex-wrap"
+      aria-label="Add new log form"
+    >
       <input
         type="text"
         placeholder="Task name"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        aria-label="Task name"
       />
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        aria-label="Select category"
       >
         {categories.map((c) => (
           <option key={c.id} value={c.id}>
@@ -56,17 +62,20 @@ export default function AddLogForm({ categories, onAdd }: Props) {
         min={1}
         value={minutes}
         onChange={(e) => setMinutes(Number(e.target.value))}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        aria-label="Minutes spent"
       />
       <input
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+        aria-label="Select date"
       />
       <button
         type="submit"
-        className="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition"
+        className="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700 transition focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        aria-label="Add log"
       >
         Add Log
       </button>

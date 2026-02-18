@@ -28,7 +28,7 @@ export default function SummaryCards({ logs, categories }: Props) {
     categories.find((c) => c.id === topCategoryId)?.name || "N/A";
 
   return (
-    <div className="grid grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div className="p-4 border border-neutral-800 rounded-lg">
         <p className="text-sm text-neutral-400">Today</p>
         <p className="text-xl font-semibold">{todayMinutes} min</p>
