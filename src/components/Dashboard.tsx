@@ -3,6 +3,8 @@ import AddLogForm from "./AddLogForm";
 import LogList from "./LogList";
 import CategoryChart from "./CategoryChart";
 import WeeklyChart from "./WeeklyChart";
+import LogFilter from "./LogFilter";
+import { useState } from "react";
 import type { Log, Category } from "../types";
 
 interface DashboardProps {
@@ -16,31 +18,42 @@ export default function Dashboard({
   categories,
   setLogs,
 }: DashboardProps) {
-  const handleAddLog = (log: Log) => {
-    setLogs([log, ...logs]);
-  };
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sortBy, setSortBy] = useState("date-desc");
 
-  const handleUpdateLog = (updatedLog: Log) => {
-    setLogs(logs.map((l) => (l.id === updatedLog.id ? updatedLog : l)));
-  };
-
-  const handleDeleteLog = (id: string) => {
-    if (confirm("Delete this log?")) {
-      setLogs(logs.filter((l) => l.id !== id));
-    }
-  };
+  const filteredLogs = logs
+    .filter((l) => !selectedCategory || l.categoryId === selectedCategory)
+    .sort((a, b) => {
+      if (sortBy === "date-desc") return b.date.localeCompare(a.date);
+      if (sortBy === "date-asc") return a.date.localeCompare(b.date);
+      if (sortBy === "minutes-desc") return b.minutes - a.minutes;
+      if (sortBy === "minutes-asc") return a.minutes - b.minutes;
+      return 0;
+    });
 
   return (
     <div className="grid gap-6">
       <SummaryCards logs={logs} categories={categories} />
-      <AddLogForm categories={categories} onAdd={handleAddLog} />
+      <AddLogForm
+        categories={categories}
+        onAdd={(log) => setLogs([log, ...logs])}
+      />
+      <LogFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
       <CategoryChart logs={logs} categories={categories} />
       <WeeklyChart logs={logs} />
       <LogList
-        logs={logs}
+        logs={filteredLogs}
         categories={categories}
-        onUpdate={handleUpdateLog}
-        onDelete={handleDeleteLog}
+        onUpdate={(log) =>
+          setLogs(logs.map((l) => (l.id === log.id ? log : l)))
+        }
+        onDelete={(id) => setLogs(logs.filter((l) => l.id !== id))}
       />
     </div>
   );
