@@ -25,7 +25,7 @@ export default function LogItem({
   };
 
   return (
-    <div className="flex justify-between p-4 border border-neutral-800 rounded-lg hover:bg-neutral-900 transition-colors">
+    <div className="flex justify-between p-4 bg-neutral-900/70 dark:bg-neutral-100/10 backdrop-blur-md border border-neutral-700 rounded-xl hover:scale-105 transition-transform duration-200">
       {isEditing ? (
         <div className="flex gap-2 flex-1">
           <input
