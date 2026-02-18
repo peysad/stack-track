@@ -2,6 +2,7 @@ import SummaryCards from "./SummaryCards";
 import AddLogForm from "./AddLogForm";
 import LogList from "./LogList";
 import CategoryChart from "./CategoryChart";
+import WeeklyChart from "./WeeklyChart";
 import type { Log, Category } from "../types";
 
 interface DashboardProps {
@@ -34,6 +35,7 @@ export default function Dashboard({
       <SummaryCards logs={logs} categories={categories} />
       <AddLogForm categories={categories} onAdd={handleAddLog} />
       <CategoryChart logs={logs} categories={categories} />
+      <WeeklyChart logs={logs} />
       <LogList
         logs={logs}
         categories={categories}
