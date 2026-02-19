@@ -28,5 +28,9 @@ export default function CategoryChart({ logs, categories }: Props) {
     ],
   };
 
-  return <Pie data={data} />;
+  return (
+    <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+      <Pie data={data} />
+    </div>
+  );
 }
