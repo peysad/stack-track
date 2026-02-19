@@ -1,25 +1,40 @@
-import { useState } from "react";
-import Layout from "./components/Layout";
+import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
-import { useLocalStorage } from "./hooks/useLocalStorage";
+import Layout from "./components/Layout";
 import type { Log, Category } from "./types";
+import { ThemeProvider } from "./context/ThemeContext";
 
-function App() {
-  const [logs, setLogs] = useLocalStorage<Log[]>("logs", []);
-  const [categories, setCategories] = useLocalStorage<Category[]>(
-    "categories",
-    [
-      { id: "coding", name: "Coding", color: "#4f46e5" },
-      { id: "learning", name: "Learning", color: "#10b981" },
-      { id: "meeting", name: "Meeting", color: "#f59e0b" },
-    ],
-  );
+const defaultCategories: Category[] = [
+  { id: "frontend", name: "Frontend", color: "#6366f1" },
+  { id: "backend", name: "Backend", color: "#10b981" },
+  { id: "design", name: "Design", color: "#ec4899" },
+];
+
+export default function App() {
+  const [logs, setLogs] = useState<Log[]>([]);
+
+  // Load logs from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("stacktrack-logs");
+    if (saved) {
+      setLogs(JSON.parse(saved));
+    }
+  }, []);
+
+  // Persist logs
+  useEffect(() => {
+    localStorage.setItem("stacktrack-logs", JSON.stringify(logs));
+  }, [logs]);
 
   return (
-    <Layout>
-      <Dashboard logs={logs} categories={categories} />
-    </Layout>
+    <ThemeProvider>
+      <Layout>
+        <Dashboard
+          logs={logs}
+          categories={defaultCategories}
+          setLogs={setLogs}
+        />
+      </Layout>
+    </ThemeProvider>
   );
 }
-
-export default App;
