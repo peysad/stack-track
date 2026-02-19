@@ -16,9 +16,7 @@ export default function App() {
   // Load logs from localStorage
   useEffect(() => {
     const saved = localStorage.getItem("stacktrack-logs");
-    if (saved) {
-      setLogs(JSON.parse(saved));
-    }
+    if (saved) setLogs(JSON.parse(saved));
   }, []);
 
   // Persist logs
@@ -28,13 +26,15 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <Layout>
-        <Dashboard
-          logs={logs}
-          categories={defaultCategories}
-          setLogs={setLogs}
-        />
-      </Layout>
+      <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-500">
+        <Layout>
+          <Dashboard
+            logs={logs}
+            categories={defaultCategories}
+            setLogs={setLogs}
+          />
+        </Layout>
+      </div>
     </ThemeProvider>
   );
 }
