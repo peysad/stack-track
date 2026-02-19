@@ -1,4 +1,3 @@
-import LogItem from "./LogItem";
 import type { Log, Category } from "../types";
 
 interface Props {
@@ -14,6 +13,9 @@ export default function LogList({
   onUpdate,
   onDelete,
 }: Props) {
+  const getCategoryName = (id: string) =>
+    categories.find((c) => c.id === id)?.name || "Unknown";
+
   return (
     <div className="space-y-4">
       {logs.map((log) => (
@@ -29,6 +31,22 @@ export default function LogList({
               </p>
             </div>
             <div className="text-sm text-neutral-400">{log.date}</div>
+          </div>
+
+          <div className="flex gap-3 mt-4">
+            <button
+              onClick={() => onUpdate(log)}
+              className="text-sm px-3 py-1 rounded-lg border border-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => onDelete(log.id)}
+              className="text-sm px-3 py-1 rounded-lg border border-red-300 dark:border-red-700 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition"
+            >
+              Delete
+            </button>
           </div>
         </div>
       ))}
