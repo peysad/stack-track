@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import type { Log, Category } from "./types";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const defaultCategories: Category[] = [
   { id: "frontend", name: "Frontend", color: "#6366f1" },
@@ -26,8 +27,14 @@ export default function App() {
   }, [logs]);
 
   return (
-    <Layout>
-      <Dashboard logs={logs} categories={defaultCategories} setLogs={setLogs} />
-    </Layout>
+    <ThemeProvider>
+      <Layout>
+        <Dashboard
+          logs={logs}
+          categories={defaultCategories}
+          setLogs={setLogs}
+        />
+      </Layout>
+    </ThemeProvider>
   );
 }
