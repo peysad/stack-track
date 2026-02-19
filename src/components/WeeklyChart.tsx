@@ -29,5 +29,9 @@ export default function WeeklyChart({ logs }: Props) {
     ],
   };
 
-  return <Bar data={data} />;
+  return (
+    <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+      <Bar data={data} />
+    </div>
+  );
 }

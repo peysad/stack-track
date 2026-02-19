@@ -28,32 +28,25 @@ export default function SummaryCards({ logs, categories }: Props) {
     categories.find((c) => c.id === topCategoryId)?.name || "N/A";
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      {[
-        {
-          label: "Today",
-          value: todayMinutes,
-          color: "from-indigo-500 to-indigo-700",
-        },
-        {
-          label: "This Week",
-          value: weekMinutes,
-          color: "from-green-500 to-green-700",
-        },
-        {
-          label: "Top Category",
-          value: topCategoryName,
-          color: "from-pink-500 to-pink-700",
-        },
-      ].map((card) => (
-        <div
-          key={card.label}
-          className={`p-6 rounded-2xl bg-gradient-to-br ${card.color} shadow-lg flex flex-col justify-center items-center text-white`}
-        >
-          <p className="text-sm">{card.label}</p>
-          <p className="text-2xl font-bold">{card.value}</p>
-        </div>
-      ))}
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">Today</p>
+        <p className="text-2xl font-semibold mt-2">{todayMinutes} min</p>
+      </div>
+
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          This Week
+        </p>
+        <p className="text-2xl font-semibold mt-2">{weekMinutes} min</p>
+      </div>
+
+      <div className="p-6 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
+        <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          Top Category
+        </p>
+        <p className="text-2xl font-semibold mt-2">{topCategoryName}</p>
+      </div>
     </div>
   );
 }
