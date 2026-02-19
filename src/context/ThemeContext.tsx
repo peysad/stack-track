@@ -10,16 +10,21 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("theme") as Theme | null;
-    return stored || "light";
+    // Load theme from localStorage immediately
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("stacktrack-theme") as Theme | null;
+      if (stored) return stored;
+    }
+    return "light";
   });
 
+  // Apply theme class to html immediately
   useEffect(() => {
     const root = document.documentElement;
     root.classList.remove("light", "dark");
     root.classList.add(theme);
     root.style.transition = "background-color 0.5s, color 0.5s";
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("stacktrack-theme", theme);
   }, [theme]);
 
   const toggleTheme = () => {
