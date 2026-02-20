@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
 import Dashboard from "./components/Dashboard";
 import Layout from "./components/Layout";
 import type { Log, Category } from "./types";
-import { ThemeProvider } from "./context/ThemeContext";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 const defaultCategories: Category[] = [
   { id: "frontend", name: "Frontend", color: "#6366f1" },
@@ -11,30 +10,26 @@ const defaultCategories: Category[] = [
 ];
 
 export default function App() {
-  const [logs, setLogs] = useState<Log[]>([]);
+  // Use local storage for logs
+  const [logs, setLogs] = useLocalStorage<Log[]>("stacktrack-logs", []);
+  // Persist custom categories as well
+  const [customCategories, setCustomCategories] = useLocalStorage<Category[]>(
+    "stacktrack-custom-categories",
+    [],
+  );
 
-  // Load logs from localStorage
-  useEffect(() => {
-    const saved = localStorage.getItem("stacktrack-logs");
-    if (saved) setLogs(JSON.parse(saved));
-  }, []);
-
-  // Persist logs
-  useEffect(() => {
-    localStorage.setItem("stacktrack-logs", JSON.stringify(logs));
-  }, [logs]);
+  const allCategories = [...defaultCategories, ...customCategories];
 
   return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-500">
-        <Layout>
-          <Dashboard
-            logs={logs}
-            categories={defaultCategories}
-            setLogs={setLogs}
-          />
-        </Layout>
-      </div>
-    </ThemeProvider>
+    <div className="min-h-screen bg-white dark:bg-neutral-950 text-neutral-900 dark:text-neutral-100 transition-colors duration-500">
+      <Layout>
+        <Dashboard
+          logs={logs}
+          setLogs={setLogs}
+          categories={allCategories}
+          setCustomCategories={setCustomCategories} // pass setter for custom categories
+        />
+      </Layout>
+    </div>
   );
 }
