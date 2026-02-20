@@ -13,9 +13,13 @@ interface DashboardProps {
   logs: Log[];
   setLogs: (logs: Log[]) => void;
   categories: Category[];
+  setCustomCategories?: React.Dispatch<React.SetStateAction<Category[]>>; // optional
 }
-
-export default function Dashboard({ logs, setLogs, categories }: DashboardProps) {
+export default function Dashboard({
+  logs,
+  setLogs,
+  categories,
+}: DashboardProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortBy, setSortBy] = useState("date-desc");
@@ -37,15 +41,35 @@ export default function Dashboard({ logs, setLogs, categories }: DashboardProps)
   return (
     <div className="space-y-6">
       <Header onAdd={() => setDrawerOpen(true)} />
-      <AddLogDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} categories={categories} onAdd={handleAddLog} />
+      <AddLogDrawer
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        categories={categories}
+        onAdd={handleAddLog}
+      />
       <SummaryCards logs={logs} categories={categories} />
-      <LogFilter categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} sortBy={sortBy} setSortBy={setSortBy} />
+      <LogFilter
+        categories={categories}
+        selectedCategory={selectedCategory}
+        setSelectedCategory={setSelectedCategory}
+        sortBy={sortBy}
+        setSortBy={setSortBy}
+      />
       <div className="flex justify-end">
         <ExportCSV logs={logs} categories={categories} />
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-2">
-          <LogList logs={filteredLogs} categories={categories} onUpdate={(log: Log) => setLogs(logs.map((l: Log) => (l.id === log.id ? log : l)))} onDelete={(id: string) => setLogs(logs.filter((l: Log) => l.id !== id))} />
+          <LogList
+            logs={filteredLogs}
+            categories={categories}
+            onUpdate={(log: Log) =>
+              setLogs(logs.map((l: Log) => (l.id === log.id ? log : l)))
+            }
+            onDelete={(id: string) =>
+              setLogs(logs.filter((l: Log) => l.id !== id))
+            }
+          />
         </div>
         <div className="space-y-6">
           <CategoryChart logs={logs} categories={categories} />
