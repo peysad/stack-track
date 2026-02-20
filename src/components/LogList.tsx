@@ -29,15 +29,14 @@ export default function LogList({
     setEditCategoryId(log.categoryId);
   };
 
-  const saveEdit = (id: string) => {
+  const saveEdit = () => {
     onUpdate({
-      id,
-      task,
-      minutes,
-      categoryId,
-      date,
-      createdAt:
-        logs.find((l) => l.id === id)?.createdAt || new Date().toISOString(),
+      id: log.id,
+      task: log.task,
+      minutes: log.minutes,
+      categoryId: log.categoryId,
+      date: log.date,
+      createdAt: log.createdAt,
     });
     setEditingId(null);
   };
