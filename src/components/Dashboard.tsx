@@ -7,19 +7,22 @@ import ExportCSV from "./ExportCSV";
 import CategoryChart from "./CategoryChart";
 import WeeklyChart from "./WeeklyChart";
 import LogList from "./LogList";
+import type { Log, Category } from "../types";
 
-export default function Dashboard({
-  logs,
-  categories,
-  setLogs,
-}: DashboardProps) {
+interface DashboardProps {
+  logs: Log[];
+  setLogs: (logs: Log[]) => void;
+  categories: Category[];
+}
+
+export default function Dashboard({ logs, setLogs, categories }: DashboardProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [sortBy, setSortBy] = useState("date-desc");
 
   const filteredLogs = logs
-    .filter((l) => !selectedCategory || l.categoryId === selectedCategory)
-    .sort((a, b) => {
+    .filter((l: Log) => !selectedCategory || l.categoryId === selectedCategory)
+    .sort((a: Log, b: Log) => {
       if (sortBy === "date-desc") return b.date.localeCompare(a.date);
       if (sortBy === "date-asc") return a.date.localeCompare(b.date);
       if (sortBy === "minutes-desc") return b.minutes - a.minutes;
@@ -27,50 +30,23 @@ export default function Dashboard({
       return 0;
     });
 
-  const handleAddLog = (log: any) => {
+  const handleAddLog = (log: Log) => {
     setLogs([log, ...logs]);
   };
 
   return (
     <div className="space-y-6">
       <Header onAdd={() => setDrawerOpen(true)} />
-
-      <AddLogDrawer
-        open={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-        categories={categories}
-        onAdd={handleAddLog}
-      />
-
+      <AddLogDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)} categories={categories} onAdd={handleAddLog} />
       <SummaryCards logs={logs} categories={categories} />
-
-      <LogFilter
-        categories={categories}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-      />
-
+      <LogFilter categories={categories} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} sortBy={sortBy} setSortBy={setSortBy} />
       <div className="flex justify-end">
         <ExportCSV logs={logs} categories={categories} />
       </div>
-
-      {/* Main Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: Logs */}
         <div className="lg:col-span-2">
-          <LogList
-            logs={filteredLogs}
-            categories={categories}
-            onUpdate={(log) =>
-              setLogs(logs.map((l) => (l.id === log.id ? log : l)))
-            }
-            onDelete={(id) => setLogs(logs.filter((l) => l.id !== id))}
-          />
+          <LogList logs={filteredLogs} categories={categories} onUpdate={(log: Log) => setLogs(logs.map((l: Log) => (l.id === log.id ? log : l)))} onDelete={(id: string) => setLogs(logs.filter((l: Log) => l.id !== id))} />
         </div>
-
-        {/* Right: Charts */}
         <div className="space-y-6">
           <CategoryChart logs={logs} categories={categories} />
           <WeeklyChart logs={logs} />
