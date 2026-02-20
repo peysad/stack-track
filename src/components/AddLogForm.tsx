@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Category, Log } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,6 +12,40 @@ export default function AddLogForm({ categories, onAdd }: Props) {
   const [categoryId, setCategoryId] = useState(categories[0]?.id || "");
   const [minutes, setMinutes] = useState(25);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
+  const [customCategories, setCustomCategories] = useState<Category[]>([]);
+  const [newCategoryName, setNewCategoryName] = useState("");
+
+  useEffect(() => {
+    const stored = localStorage.getItem("customCategories");
+    if (stored) {
+      setCustomCategories(JSON.parse(stored));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("customCategories", JSON.stringify(customCategories));
+  }, [customCategories]);
+
+  const allCategories = [...categories, ...customCategories];
+
+  const addCustomCategory = () => {
+    const name = newCategoryName.trim();
+    if (!name) return;
+
+    const exists = allCategories.some(
+      (c) => c.name.toLowerCase() === name.toLowerCase(),
+    );
+    if (exists) return;
+
+    const newCat: Category = {
+      id: uuidv4(),
+      name,
+    };
+
+    setCustomCategories((prev) => [...prev, newCat]);
+    setCategoryId(newCat.id);
+    setNewCategoryName("");
+  };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,30 +75,58 @@ export default function AddLogForm({ categories, onAdd }: Props) {
         className="
           p-2 rounded-lg border transition-all duration-200
           bg-zinc-100 text-zinc-800 border-zinc-300
-          focus:outline-none focus:ring-2 focus:ring-violet-400
+          focus:outline-none focus:ring-2 focus:ring-violet-500
           dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
-          dark:focus:ring-violet-500
+          dark:focus:ring-violet-400
         "
       />
 
-      {/* Updated Dropdown Style */}
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
         className="
+          appearance-none
           p-2 rounded-lg border transition-all duration-200
           bg-zinc-100 text-zinc-800 border-zinc-300
-          focus:outline-none focus:ring-2 focus:ring-violet-400
+          focus:outline-none focus:ring-2 focus:ring-violet-500
           dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
-          dark:focus:ring-violet-500
+          dark:focus:ring-violet-400
         "
       >
-        {categories.map((c) => (
+        {allCategories.map((c) => (
           <option key={c.id} value={c.id}>
             {c.name}
           </option>
         ))}
       </select>
+
+      {/* Add Custom Category */}
+      <div className="flex gap-2">
+        <input
+          value={newCategoryName}
+          onChange={(e) => setNewCategoryName(e.target.value)}
+          placeholder="New category"
+          className="
+            flex-1 p-2 rounded-lg border transition-all duration-200
+            bg-zinc-100 text-zinc-800 border-zinc-300
+            focus:outline-none focus:ring-2 focus:ring-violet-500
+            dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+            dark:focus:ring-violet-400
+          "
+        />
+        <button
+          type="button"
+          onClick={addCustomCategory}
+          className="
+            px-3 rounded-lg text-white
+            bg-indigo-600 transition-all duration-200
+            hover:bg-indigo-700
+            dark:bg-indigo-500 dark:hover:bg-indigo-600
+          "
+        >
+          Add
+        </button>
+      </div>
 
       <input
         type="number"
@@ -74,9 +136,9 @@ export default function AddLogForm({ categories, onAdd }: Props) {
         className="
           p-2 rounded-lg border transition-all duration-200
           bg-zinc-100 text-zinc-800 border-zinc-300
-          focus:outline-none focus:ring-2 focus:ring-violet-400
+          focus:outline-none focus:ring-2 focus:ring-violet-500
           dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
-          dark:focus:ring-violet-500
+          dark:focus:ring-violet-400
         "
       />
 
@@ -87,25 +149,23 @@ export default function AddLogForm({ categories, onAdd }: Props) {
         className="
           p-2 rounded-lg border transition-all duration-200
           bg-zinc-100 text-zinc-800 border-zinc-300
-          focus:outline-none focus:ring-2 focus:ring-violet-400
+          focus:outline-none focus:ring-2 focus:ring-violet-500
           dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
-          dark:focus:ring-violet-500
+          dark:focus:ring-violet-400
         "
       />
 
-      <div className="flex gap-2">
-        <button
-          type="submit"
-          className="
-            px-4 py-2 rounded-lg text-white
-            bg-indigo-600 transition-all duration-200
-            hover:bg-indigo-700
-            dark:bg-indigo-500 dark:hover:bg-indigo-600
-          "
-        >
-          Add Log
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="
+          px-4 py-2 rounded-lg text-white
+          bg-indigo-600 transition-all duration-200
+          hover:bg-indigo-700
+          dark:bg-indigo-500 dark:hover:bg-indigo-600
+        "
+      >
+        Add Log
+      </button>
     </form>
   );
 }
