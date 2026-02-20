@@ -1,5 +1,5 @@
 import type { Log, CategoryDistribution, WeeklyDayStat } from "../types";
-import { startOfWeek, addDays, format, parseISO } from "date-fns";
+import { startOfWeek, addDays, format } from "date-fns";
 
 export function getWeeklyStats(logs: Log[]): WeeklyDayStat[] {
   const weekStart = startOfWeek(new Date(), { weekStartsOn: 0 }); // Sunday start
