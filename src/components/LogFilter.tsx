@@ -20,7 +20,13 @@ export default function LogFilter({
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-indigo-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-indigo-500
+        "
       >
         <option value="">All Categories</option>
         {categories.map((c) => (
@@ -33,7 +39,13 @@ export default function LogFilter({
       <select
         value={sortBy}
         onChange={(e) => setSortBy(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-indigo-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-indigo-500
+        "
       >
         <option value="date-desc">Date Desc</option>
         <option value="date-asc">Date Asc</option>

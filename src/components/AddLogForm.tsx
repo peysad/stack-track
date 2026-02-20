@@ -13,43 +13,51 @@ export default function AddLogForm({ categories, onAdd }: Props) {
   const [minutes, setMinutes] = useState(25);
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!task || !categoryId || minutes <= 0) return;
+    if (!task.trim()) return;
 
-    onAdd({
+    const log: Log = {
       id: uuidv4(),
-      task,
+      task: task.trim(),
       categoryId,
       minutes,
       date,
       createdAt: new Date().toISOString(),
-    });
+    };
 
+    onAdd(log);
     setTask("");
     setMinutes(25);
     setDate(new Date().toISOString().slice(0, 10));
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col sm:flex-row sm:items-end gap-4 flex-wrap"
-      aria-label="Add new log form"
-    >
+    <form onSubmit={submit} className="flex flex-col gap-3">
       <input
-        type="text"
-        placeholder="Task name"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        className="p-2 rounded-xl border-0 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder:text-neutral-400"
-        aria-label="Task name"
+        placeholder="Task name"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-violet-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-violet-500
+        "
       />
+
+      {/* Updated Dropdown Style */}
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
-        className="p-2 rounded-xl border-0 bg-gradient-to-r from-neutral-800 to-neutral-900 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
-        aria-label="Select category"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-violet-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-violet-500
+        "
       >
         {categories.map((c) => (
           <option key={c.id} value={c.id}>
@@ -57,28 +65,47 @@ export default function AddLogForm({ categories, onAdd }: Props) {
           </option>
         ))}
       </select>
+
       <input
         type="number"
         min={1}
         value={minutes}
         onChange={(e) => setMinutes(Number(e.target.value))}
-        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        aria-label="Minutes spent"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-violet-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-violet-500
+        "
       />
+
       <input
         type="date"
         value={date}
         onChange={(e) => setDate(e.target.value)}
-        className="p-2 border border-neutral-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-        aria-label="Select date"
+        className="
+          p-2 rounded-lg border transition-all duration-200
+          bg-zinc-100 text-zinc-800 border-zinc-300
+          focus:outline-none focus:ring-2 focus:ring-violet-400
+          dark:bg-zinc-800 dark:text-zinc-100 dark:border-zinc-700
+          dark:focus:ring-violet-500
+        "
       />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-gradient-to-r from-indigo-500 to-indigo-700 rounded-xl hover:scale-105 transition-transform text-white shadow-lg"
-        aria-label="Add log"
-      >
-        Add Log
-      </button>
+
+      <div className="flex gap-2">
+        <button
+          type="submit"
+          className="
+            px-4 py-2 rounded-lg text-white
+            bg-indigo-600 transition-all duration-200
+            hover:bg-indigo-700
+            dark:bg-indigo-500 dark:hover:bg-indigo-600
+          "
+        >
+          Add Log
+        </button>
+      </div>
     </form>
   );
 }
